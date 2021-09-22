@@ -5,8 +5,11 @@ import { isLoggedIn } from "../utils/helpers";
 
 class Nav extends Component {
   render() {
+
     let listItems = "";
     if (this.props.loggedIn) {
+      const { authedUser, users } = this.props
+      const loggedInUser = users[authedUser]
       listItems = (
         <ul>
           <li>
@@ -25,7 +28,7 @@ class Nav extends Component {
             </NavLink>
           </li>
           <li>
-            <span>Hello</span>
+            <span>Hello {loggedInUser.name}</span>
           </li>
           <li>
             <NavLink to="/logout" activeClassName="active">
@@ -50,9 +53,11 @@ class Nav extends Component {
   }
 }
 
-function mapStateToProps({ authedUser }) {
+function mapStateToProps({ authedUser, users }) {
   return {
     loggedIn: isLoggedIn(authedUser),
+    authedUser,
+    users
   };
 }
 

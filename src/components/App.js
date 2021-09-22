@@ -11,17 +11,22 @@ import Leaderboard from "./Leaderboard";
 import Logout from "./Logout";
 import Login from "./Login";
 import { isLoggedIn } from "../utils/helpers";
-
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
 class App extends Component {
+
+  //Use component did mount to load the initial data
   componentDidMount() {
     this.props.dispatch(handleInitialData());
   }
+  
   render() {
     return (
       <BrowserRouter>
         <Fragment>
+        <CssBaseline />
+        <Container maxWidth="sm">
           <LoadingBar />
-          <div className="container">
             <Nav />
             {this.props.loggedIn !== true ? (
               <div>
@@ -39,7 +44,7 @@ class App extends Component {
                 <Route path="/logout" component={Logout} />
               </div>
             )}
-          </div>
+            </Container>
         </Fragment>
       </BrowserRouter>
     );

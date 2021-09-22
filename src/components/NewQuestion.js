@@ -23,11 +23,12 @@ class NewQuestion extends Component {
     const { dispatch, id } = this.props
     
     dispatch(handleAddQuestion(text, id))
-
+    console.log("1 state:", this.state)
     this.setState(() => ({
       text: "",
       toHome: id ? false : true,
     }));
+    console.log("2 state:", this.state)
   };
 
   render() {
@@ -35,7 +36,8 @@ class NewQuestion extends Component {
     const questionLeft = 280 - text.length;
 
     if (toHome === true) {
-      return <Redirect to='/' />
+      console.log("here 1 going to redirect")
+      return <Redirect to='/leaderboard' />
     }
 
     return (

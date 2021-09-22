@@ -1,70 +1,92 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { TextField } from "@mui/material";
 import { Button } from "@mui/material";
-import { Grid } from "@mui/material";
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Avatar from "@mui/material/Avatar";
+import { setAuthedUser } from "../actions/authedUser";
+import { Redirect } from "react-router-dom";
 
 class Login extends Component {
   state = {
-    email: "",
-    password: "",
+    userId: "",
+    toDashboard: false,
+    usersArray: []
   };
 
   handleChange = (e) => {
-    this.setState({ [e.currentTarget.id]: e.currentTarget.value });
+    e.preventDefault();
+    const userId = e.target.value
+
+    this.setState(() => ({
+      userId
+    }));
   };
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    const { userId } = this.state;
+    const { dispatch } = this.props;
+
+    dispatch(setAuthedUser(userId));
+    this.setState(() => ({
+      userId: "",
+      toDashboard: true,
+    }));
+  };
+
+  
+
   render() {
+    const { userId, toDashboard } = this.state;
+
+    if (toDashboard === true) {
+      return <Redirect to="/leaderboard" />;
+    }
+
+    const { users } = this.props
+    let usersArray = [];
+    Object.keys(users).forEach((userId) => {
+      const user = users[userId];
+      usersArray.push(user);
+    });
+
     return (
-      <div className="App">
-        <Grid container spacing={2}>
-          <Grid item xs={6} md={8}>
-            <Item>xs=6 md=8</Item>
-          </Grid>
-          <Grid item xs={6} md={4}>
-            <Item>xs=6 md=4</Item>
-          </Grid>
-          <Grid item xs={6} md={4}>
-            <Item>xs=6 md=4</Item>
-          </Grid>
-          <Grid item xs={6} md={8}>
-            <Item>xs=6 md=8</Item>
-          </Grid>
-        </Grid>
-        <form className="form">
-          <TextField
-            id="email"
-            label="Standard"
-            labelText="Email"
-            variant="standard"
-            handleChange={this.handleChange}
-            type="text"
-          />
-          <TextField
-            id="password"
-            label="Standard"
-            labelText="Password"
-            variant="standard"
-            handleChange={this.handleChange}
-            type="password"
-          />
-
-          <Button type="button" color="primary" className="form__custom-button">
-            Log in
+      <div>
+      <form onSubmit={this.handleSubmit}>
+        <FormControl fullWidth>
+          <InputLabel id="login">Login</InputLabel>
+          <Select
+            labelId="login"
+            id="login"
+            value={userId}
+            label="Login"
+            onChange={this.handleChange}
+          >
+            {usersArray.map((user) => (
+              <MenuItem value={user.id} key={user.id}>
+                <Avatar alt={user.name} src={user.avatarURL} />
+                {user.name}
+              </MenuItem>
+            ))}
+          </Select>
+          </FormControl>
+          <Button type="submit" variant="outlined" size="large" disabled={userId === ""}>
+            Login
           </Button>
-        </form>
-      </div>
-    );
-  }
-}
 
-export default connect()(Login);
+      </form>
+      </div>
+      );
+    }
+  }
+
+function mapStateToProps({ users }) {
+  return {
+    users,
+  };
+}
+export default connect(mapStateToProps)(Login);
