@@ -23,12 +23,10 @@ class NewQuestion extends Component {
     const { dispatch, id } = this.props
     
     dispatch(handleAddQuestion(text, id))
-    console.log("1 state:", this.state)
     this.setState(() => ({
       text: "",
       toHome: id ? false : true,
     }));
-    console.log("2 state:", this.state)
   };
 
   render() {

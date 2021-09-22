@@ -14,8 +14,8 @@ class Nav extends Component {
   render() {
     let listItems = "";
     if (this.props.loggedIn) {
-      const { authedUser, users } = this.props;
-      const loggedInUser = users[authedUser];
+      const { authedUser } = this.props;
+
       listItems = (
         <Toolbar>
           <Button color="inherit">
@@ -34,7 +34,7 @@ class Nav extends Component {
             </NavLink>
           </Button>
           <Button color="inherit">
-            <span>Hello {loggedInUser.name}</span>
+            <span>Hello {authedUser.name}</span>
           </Button>
           <Button color="inherit">
             <NavLink to="/logout" activeClassName="active">
@@ -65,11 +65,10 @@ class Nav extends Component {
   }
 }
 
-function mapStateToProps({ authedUser, users }) {
+function mapStateToProps({ authedUser }) {
   return {
     loggedIn: isLoggedIn(authedUser),
-    authedUser,
-    users,
+    authedUser
   };
 }
 

@@ -12,7 +12,7 @@ import { Redirect } from "react-router-dom";
 class Login extends Component {
   state = {
     userId: "",
-    toDashboard: false,
+    redirectToDashboard: false,
     usersArray: []
   };
 
@@ -29,22 +29,21 @@ class Login extends Component {
     e.preventDefault();
 
     const { userId } = this.state;
-    const { dispatch } = this.props;
-    
-    dispatch(setAuthedUser(userId));
+    const { dispatch, users } = this.props;
+    const user = users[userId]
+    dispatch(setAuthedUser(user));  
     this.setState(() => ({
-      userId: "",
-      toDashboard: true,
+      redirectToDashboard: true,
     }));
   };
 
   
 
   render() {
-    const { userId, toDashboard } = this.state;
-
-    if (toDashboard === true) {
-      console.log("here 1")
+    const { userId, redirectToDashboard } = this.state;
+    
+    if (redirectToDashboard === true) {
+      console.log("here 1 in redirect")
       return <Redirect to="/leaderboard" />;
     }
 

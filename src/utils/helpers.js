@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import { isEmpty, isNull } from 'lodash'
 import {
     _formatQuestion
   } from './_DATA.js'
@@ -8,5 +8,5 @@ import {
   }
 
 export function isLoggedIn(authedUser) {
-  return !isEmpty(authedUser)
+  return !isNull(authedUser) && !isEmpty(authedUser) && !isEmpty(authedUser.id)
 }

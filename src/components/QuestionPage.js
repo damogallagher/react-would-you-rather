@@ -25,7 +25,6 @@ class QuestionPage extends Component {
 
 function mapStateToProps({authedUser, questions, users}, props) {
   const {id} = props.match.params
-  console.log("id:", id)
   return {
     id,
     replies: !questions[id]
