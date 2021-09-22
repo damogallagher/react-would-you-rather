@@ -30,7 +30,7 @@ class Login extends Component {
 
     const { userId } = this.state;
     const { dispatch } = this.props;
-
+    
     dispatch(setAuthedUser(userId));
     this.setState(() => ({
       userId: "",
@@ -44,6 +44,7 @@ class Login extends Component {
     const { userId, toDashboard } = this.state;
 
     if (toDashboard === true) {
+      console.log("here 1")
       return <Redirect to="/leaderboard" />;
     }
 
@@ -73,10 +74,11 @@ class Login extends Component {
               </MenuItem>
             ))}
           </Select>
-          </FormControl>
-          <Button type="submit" variant="outlined" size="large" disabled={userId === ""}>
+          <Button type="submit" variant="contained" size="large" disabled={userId === ""}>
             Login
           </Button>
+          </FormControl>
+
 
       </form>
       </div>

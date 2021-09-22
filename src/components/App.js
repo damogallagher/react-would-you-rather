@@ -19,15 +19,16 @@ class App extends Component {
   componentDidMount() {
     this.props.dispatch(handleInitialData());
   }
-  
+
   render() {
     return (
       <BrowserRouter>
         <Fragment>
         <CssBaseline />
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
           <LoadingBar />
             <Nav />
+            <br /><br />
             {this.props.loggedIn !== true ? (
               <div>
                 <Route path="/logout" component={Logout} />
