@@ -33,8 +33,7 @@ class App extends Component {
               <div>
                 <Route path="/logout" component={Logout} />
                 <Login />
-              </div>
-              
+              </div>             
               
             ) : (
               <div>

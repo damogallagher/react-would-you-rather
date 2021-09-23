@@ -17,11 +17,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -32,7 +28,7 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
+function tabDisplayProps(index) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
@@ -49,57 +45,90 @@ class Dashboard extends Component {
     }));
   };
 
+  getQuestions = (answered) => {
+    console.log("questions:", this.props.questions)
+    return (
+      <div>
+      <ul className="dashboard-list">
+        {this.props.questions.map((question) => (
+
+          <li key={question.id}>
+            <Question questionId={question.id} />
+          </li>
+        ))}
+      </ul>
+    </div>
+    )
+  }
+
   render() {
     const { value } = this.state;
-    /*return (
+    const { answeredQuestions, unAnsweredQuestions } = this.props;
+    let questionsList = unAnsweredQuestions
+    if (value === 1) {
+      questionsList = answeredQuestions
+    }
+    console.log("answeredQuestions:", answeredQuestions)
+    console.log("unAnsweredQuestions:", unAnsweredQuestions)
+    const questionDisplay = (
       <div>
-        <h3 className="center">Your Timeline</h3>
-        <ul className="dashboard-list">
-          {this.props.questionIds.map((id) => (
-            <li key={id}>
-              <Question questionId={id}/>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );*/
+      <ul className="dashboard-list">
+        {questionsList.map((questionId) => (
+
+          <li key={questionId}>
+            <Question questionId={questionId} />
+          </li>
+        ))}
+      </ul>
+    </div>
+    )
+
     return (
       <Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={value}
             onChange={this.handleChange}
-            aria-label="basic tabs example"
+            aria-label="questions tabs"
           >
-            <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
+            <Tab label="Unanswered Questions" {...tabDisplayProps(0)} />
+            <Tab label="Answered Questions" {...tabDisplayProps(1)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          Item One
-          <div>
-            <p className="center">Your Timeline</p>
-            <ul className="dashboard-list">
-              {this.props.questionIds.map((id) => (
-                <li key={id}>
-                  <Question questionId={id} />
-                </li>
-              ))}
-            </ul>
-          </div>
+          {questionDisplay}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+        {questionDisplay}
         </TabPanel>
       </Box>
     );
   }
 }
-function mapStateToProps({ questions }) {
+
+function getFilteredQuestions (authedUser, questions, answered) {
+  const authedUserId = authedUser.id
+  return Object.keys(questions).filter((questionId) => {
+    const qustion = questions[questionId]
+    if (answered) {
+      return qustion.optionOne.votes.includes(authedUserId) || qustion.optionTwo.votes.includes(authedUserId)
+    } else {
+      return !qustion.optionOne.votes.includes(authedUserId) && !qustion.optionTwo.votes.includes(authedUserId)
+    }
+    
+  }).sort(
+    (a, b) => questions[b].timestamp - questions[a].timestamp
+  )
+}
+
+
+function mapStateToProps({ questions, authedUser }) {
+  const answeredQuestions = getFilteredQuestions(authedUser, questions, true)
+  const unAnsweredQuestions = getFilteredQuestions(authedUser, questions, false)
+
   return {
-    questionIds: Object.keys(questions).sort(
-      (a, b) => questions[b].timestamp - questions[a].timestamp
-    ),
+    answeredQuestions,
+    unAnsweredQuestions
   };
 }
 

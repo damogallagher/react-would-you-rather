@@ -8,20 +8,20 @@ import Select from "@mui/material/Select";
 import Avatar from "@mui/material/Avatar";
 import { setAuthedUser } from "../actions/authedUser";
 import { Redirect } from "react-router-dom";
-
+import { LoadingBar } from "react-redux-loading";
 class Login extends Component {
   state = {
     userId: "",
     redirectToDashboard: false,
-    usersArray: []
+    usersArray: [],
   };
 
   handleChange = (e) => {
     e.preventDefault();
-    const userId = e.target.value
+    const userId = e.target.value;
 
     this.setState(() => ({
-      userId
+      userId,
     }));
   };
 
@@ -30,57 +30,60 @@ class Login extends Component {
 
     const { userId } = this.state;
     const { dispatch, users } = this.props;
-    const user = users[userId]
-    dispatch(setAuthedUser(user));  
+    const user = users[userId];
+    dispatch(setAuthedUser(user));
     this.setState(() => ({
-      redirectToDashboard: true,
+      redirectToDashboard: true
     }));
   };
-  
+
   render() {
-    const { userId, redirectToDashboard } = this.state;
-    
+    const { userId, redirectToDashboard, loading } = this.state;
+
     if (redirectToDashboard === true) {
       return <Redirect to="/" />;
     }
 
-    const { users } = this.props
+    const { users } = this.props;
     let usersArray = [];
     Object.keys(users).forEach((userId) => {
       const user = users[userId];
       usersArray.push(user);
     });
-
     return (
+      
       <div>
-      <form onSubmit={this.handleSubmit}>
-        <FormControl fullWidth>
-          <InputLabel id="login">Login</InputLabel>
-          <Select
-            labelId="login"
-            id="login"
-            value={userId}
-            label="Login"
-            onChange={this.handleChange}
-          >
-            {usersArray.map((user) => (
-              <MenuItem value={user.id} key={user.id}>
-                <Avatar alt={user.name} src={user.avatarURL} />
-                {user.name}
-              </MenuItem>
-            ))}
-          </Select>
-          <Button type="submit" variant="contained" size="large" disabled={userId === ""}>
-            Login
-          </Button>
+        <form onSubmit={this.handleSubmit}>
+          <FormControl fullWidth>
+            <InputLabel id="login">Login</InputLabel>
+            <Select
+              labelId="login"
+              id="login"
+              value={userId}
+              label="Login"
+              onChange={this.handleChange}
+            >
+              {usersArray.map((user) => (
+                <MenuItem value={user.id} key={user.id}>
+                  <Avatar alt={user.name} src={user.avatarURL} />
+                  {user.name}
+                </MenuItem>
+              ))}
+            </Select>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              disabled={userId === ""}
+            >
+              Login
+            </Button>
           </FormControl>
-
-
-      </form>
+        </form>
       </div>
-      );
-    }
+    );
   }
+}
 
 function mapStateToProps({ users }) {
   return {

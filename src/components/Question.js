@@ -50,7 +50,7 @@ class Question extends Component {
         <div className="question-info">
           <div>
             <span>{name}</span>
-            {/* <div>{formatDate(timestamp)}</div> */}
+            {/* <div>{formatDate(timestamp)}</div>  */}
             {parent && (
               <button
                 className="replying-to"
@@ -79,6 +79,7 @@ class Question extends Component {
   }
 }
 function mapStateToProps({ authedUser, users, questions }, { questionId }) {
+  console.log("questionId:", questionId);
   const question = questions[questionId];
   const parentQuestion = question ? questions[question.replyingTo] : null;
   return {
