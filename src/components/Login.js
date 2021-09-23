@@ -36,15 +36,12 @@ class Login extends Component {
       redirectToDashboard: true,
     }));
   };
-
   
-
   render() {
     const { userId, redirectToDashboard } = this.state;
     
     if (redirectToDashboard === true) {
-      console.log("here 1 in redirect")
-      return <Redirect to="/leaderboard" />;
+      return <Redirect to="/" />;
     }
 
     const { users } = this.props
