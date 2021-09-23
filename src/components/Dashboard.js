@@ -29,6 +29,7 @@ TabPanel.propTypes = {
 };
 
 function tabDisplayProps(index) {
+  console.log("tabDisplayProps index:", index)
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
@@ -68,8 +69,8 @@ class Dashboard extends Component {
     if (value === 1) {
       questionsList = answeredQuestions
     }
-    console.log("answeredQuestions:", answeredQuestions)
-    console.log("unAnsweredQuestions:", unAnsweredQuestions)
+    console.log("render answeredQuestions:", answeredQuestions)
+    console.log("render unAnsweredQuestions:", unAnsweredQuestions)
     const questionDisplay = (
       <div>
       <ul className="dashboard-list">
@@ -125,7 +126,8 @@ function getFilteredQuestions (authedUser, questions, answered) {
 function mapStateToProps({ questions, authedUser }) {
   const answeredQuestions = getFilteredQuestions(authedUser, questions, true)
   const unAnsweredQuestions = getFilteredQuestions(authedUser, questions, false)
-
+  console.log("mapStateToProps answeredQuestions:", answeredQuestions)
+  console.log("mapStateToProps unAnsweredQuestions:", unAnsweredQuestions)
   return {
     answeredQuestions,
     unAnsweredQuestions

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { formatQuestion } from "../utils/helpers";
+import { formatQuestion , formatDate} from "../utils/helpers";
+
 import {
   TiArrowBackOutline,
   TiHeartOutline,
@@ -27,7 +28,7 @@ class Question extends Component {
   };
   render() {
     const { question } = this.props;
-
+    console.log("question:", question)
     if (question == null) {
       return <p>This question doesn't exist</p>;
     }
@@ -50,7 +51,7 @@ class Question extends Component {
         <div className="question-info">
           <div>
             <span>{name}</span>
-            {/* <div>{formatDate(timestamp)}</div>  */}
+            {/* {<div>{formatDate(timestamp)}</div>  } */}
             {parent && (
               <button
                 className="replying-to"
