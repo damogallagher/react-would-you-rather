@@ -131,7 +131,7 @@ let users = {
     })
   }
   
-  export function _formatQuestion ({ optionOneText, optionTwoText, author }) {
+  export function _formatQuestion ({optionOneText, optionTwoText, author }) {
     return {
       id: generateUID(),
       timestamp: Date.now(),

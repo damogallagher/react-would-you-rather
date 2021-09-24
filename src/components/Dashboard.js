@@ -29,7 +29,7 @@ TabPanel.propTypes = {
 };
 
 function tabDisplayProps(index) {
-  console.log("tabDisplayProps index:", index)
+  console.log("tabDisplayProps index:", index);
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
@@ -46,43 +46,25 @@ class Dashboard extends Component {
     }));
   };
 
-  getQuestions = (answered) => {
-    console.log("questions:", this.props.questions)
-    return (
-      <div>
-      <ul className="dashboard-list">
-        {this.props.questions.map((question) => (
-
-          <li key={question.id}>
-            <Question questionId={question.id} />
-          </li>
-        ))}
-      </ul>
-    </div>
-    )
-  }
-
   render() {
     const { value } = this.state;
     const { answeredQuestions, unAnsweredQuestions } = this.props;
-    let questionsList = unAnsweredQuestions
+    let questionsList = unAnsweredQuestions;
     if (value === 1) {
-      questionsList = answeredQuestions
+      questionsList = answeredQuestions;
     }
-    console.log("render answeredQuestions:", answeredQuestions)
-    console.log("render unAnsweredQuestions:", unAnsweredQuestions)
+
     const questionDisplay = (
       <div>
-      <ul className="dashboard-list">
-        {questionsList.map((questionId) => (
-
-          <li key={questionId}>
-            <Question questionId={questionId} />
-          </li>
-        ))}
-      </ul>
-    </div>
-    )
+        <ul className="dashboard-list">
+          {questionsList.map((questionId) => (
+            <li key={questionId}>
+              <Question questionId={questionId} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
 
     return (
       <Box sx={{ width: "100%" }}>
@@ -100,37 +82,44 @@ class Dashboard extends Component {
           {questionDisplay}
         </TabPanel>
         <TabPanel value={value} index={1}>
-        {questionDisplay}
+          {questionDisplay}
         </TabPanel>
       </Box>
     );
   }
 }
 
-function getFilteredQuestions (authedUser, questions, answered) {
-  const authedUserId = authedUser.id
-  return Object.keys(questions).filter((questionId) => {
-    const qustion = questions[questionId]
-    if (answered) {
-      return qustion.optionOne.votes.includes(authedUserId) || qustion.optionTwo.votes.includes(authedUserId)
-    } else {
-      return !qustion.optionOne.votes.includes(authedUserId) && !qustion.optionTwo.votes.includes(authedUserId)
-    }
-    
-  }).sort(
-    (a, b) => questions[b].timestamp - questions[a].timestamp
-  )
+function getFilteredQuestions(authedUser, questions, answered) {
+  const authedUserId = authedUser.id;
+  return Object.keys(questions)
+    .filter((questionId) => {
+      const qustion = questions[questionId];
+      if (answered) {
+        return (
+          qustion.optionOne.votes.includes(authedUserId) ||
+          qustion.optionTwo.votes.includes(authedUserId)
+        );
+      } else {
+        return (
+          !qustion.optionOne.votes.includes(authedUserId) &&
+          !qustion.optionTwo.votes.includes(authedUserId)
+        );
+      }
+    })
+    .sort((a, b) => questions[b].timestamp - questions[a].timestamp);
 }
 
-
 function mapStateToProps({ questions, authedUser }) {
-  const answeredQuestions = getFilteredQuestions(authedUser, questions, true)
-  const unAnsweredQuestions = getFilteredQuestions(authedUser, questions, false)
-  console.log("mapStateToProps answeredQuestions:", answeredQuestions)
-  console.log("mapStateToProps unAnsweredQuestions:", unAnsweredQuestions)
+  const answeredQuestions = getFilteredQuestions(authedUser, questions, true);
+  const unAnsweredQuestions = getFilteredQuestions(
+    authedUser,
+    questions,
+    false
+  );
+
   return {
     answeredQuestions,
-    unAnsweredQuestions
+    unAnsweredQuestions,
   };
 }
 

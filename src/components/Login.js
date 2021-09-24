@@ -8,7 +8,7 @@ import Select from "@mui/material/Select";
 import Avatar from "@mui/material/Avatar";
 import { setAuthedUser } from "../actions/authedUser";
 import { Redirect } from "react-router-dom";
-import { LoadingBar } from "react-redux-loading";
+
 class Login extends Component {
   state = {
     userId: "",
@@ -38,7 +38,7 @@ class Login extends Component {
   };
 
   render() {
-    const { userId, redirectToDashboard, loading } = this.state;
+    const { userId, redirectToDashboard } = this.state;
 
     if (redirectToDashboard === true) {
       return <Redirect to="/" />;
