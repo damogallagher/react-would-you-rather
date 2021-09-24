@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Question from "./Question.js";
+import QuestionCard from "./QuestionCard.js";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -29,14 +29,13 @@ TabPanel.propTypes = {
 };
 
 function tabDisplayProps(index) {
-  console.log("tabDisplayProps index:", index);
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
-class Dashboard extends Component {
+class QuestionList extends Component {
   state = {
     value: 0,
   };
@@ -59,7 +58,7 @@ class Dashboard extends Component {
         <ul className="dashboard-list">
           {questionsList.map((questionId) => (
             <li key={questionId}>
-              <Question questionId={questionId} />
+              <QuestionCard questionId={questionId} showPreview={true}/>
             </li>
           ))}
         </ul>
@@ -93,16 +92,16 @@ function getFilteredQuestions(authedUser, questions, answered) {
   const authedUserId = authedUser.id;
   return Object.keys(questions)
     .filter((questionId) => {
-      const qustion = questions[questionId];
+      const question = questions[questionId];
       if (answered) {
         return (
-          qustion.optionOne.votes.includes(authedUserId) ||
-          qustion.optionTwo.votes.includes(authedUserId)
+          question.optionOne.votes.includes(authedUserId) ||
+          question.optionTwo.votes.includes(authedUserId)
         );
       } else {
         return (
-          !qustion.optionOne.votes.includes(authedUserId) &&
-          !qustion.optionTwo.votes.includes(authedUserId)
+          !question.optionOne.votes.includes(authedUserId) &&
+          !question.optionTwo.votes.includes(authedUserId)
         );
       }
     })
@@ -123,4 +122,4 @@ function mapStateToProps({ questions, authedUser }) {
   };
 }
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps)(QuestionList);

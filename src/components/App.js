@@ -1,18 +1,19 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { handleInitialData } from "../actions/shared";
-import Dashboard from "./Dashboard";
+import QuestionList from "./QuestionList";
 import LoadingBar from "react-redux-loading";
 import NewQuestion from "./NewQuestion";
-import QuestionPage from "./QuestionPage";
-import Nav from "./Nav";
+import QuestionPoll from "./QuestionPoll";
+import Nav from "./nav/Nav";
 import { BrowserRouter, Route } from "react-router-dom";
 import Leaderboard from "./Leaderboard";
-import Logout from "./Logout";
-import Login from "./Login";
+import Logout from "./auth/Logout";
+import Login from "./auth/Login";
 import { isLoggedIn } from "../utils/helpers";
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
+import Error404 from "./error/Error404";
 class App extends Component {
 
   //Use component did mount to load the initial data
@@ -37,11 +38,12 @@ class App extends Component {
               
             ) : (
               <div>
-                <Route path="/" exact component={Dashboard} />
-                <Route path="/question/:id" component={QuestionPage} />
+                <Route path="/" exact component={QuestionList} />
+                <Route path="/question/:id" component={QuestionPoll} />
                 <Route path="/new" component={NewQuestion} />
                 <Route path="/leaderboard" component={Leaderboard} />
                 <Route path="/logout" component={Logout} />
+                <Route path="/404" component={Error404} />
               </div>
             )}
             </Container>
