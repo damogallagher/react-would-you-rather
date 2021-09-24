@@ -10,51 +10,6 @@ import Button from "@mui/material/Button";
 
 class Nav extends Component {
   render() {
-    let listItems = "";
-    if (this.props.loggedIn) {
-      const { authedUser } = this.props;
-
-      listItems = (
-        <Toolbar>
-          <Button color="inherit">
-            <NavLink to="/" exact activeClassName="active">
-              Home
-            </NavLink>
-          </Button>
-          <Button color="inherit">
-            <NavLink to="/new" activeClassName="active">
-              New Question
-            </NavLink>
-          </Button>
-          <Button color="inherit">
-            <NavLink to="/leaderboard" activeClassName="active">
-              Leaderboard
-            </NavLink>
-          </Button>
-          <Button color="inherit">
-            <span>Hello {authedUser.name}</span>
-          </Button>
-          <Button color="inherit">
-            <NavLink to="/logout" activeClassName="active">
-              Logout
-            </NavLink>
-          </Button>
-         
-        </Toolbar>
-      );
-    } else {
-      listItems = (
-        <Toolbar>
-          <Button color="inherit">
-            <NavLink to="/login" exact activeClassName="active">
-              Login
-            </NavLink>
-          </Button>
-        </Toolbar>
-      );
-    }
-
-    //return (<nav className="nav">{listItems}</nav>);
     let appMenu = ""
     if (this.props.loggedIn) {
       const { authedUser } = this.props;

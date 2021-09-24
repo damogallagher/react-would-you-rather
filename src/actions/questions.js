@@ -1,9 +1,9 @@
-import { saveQuestion, saveQuestionAnswer } from "../utils/api";
+import { saveQuestion } from "../utils/api";
 import { showLoading, hideLoading } from "react-redux-loading";
 
 export const RECEIVE_QUESTIONS = "RECEIVE_QUESTIONS";
 export const ADD_QUESTION = "ADD_QUESTION";
-export const SAVE_QUESTION_ANSWER = 'SAVE_QUESTION_ANSWER'
+export const SAVE_QUESTION_ANSWER = "SAVE_QUESTION_ANSWER";
 
 export function receiveQuestions(questions) {
   return {
@@ -12,25 +12,12 @@ export function receiveQuestions(questions) {
   };
 }
 
-function processSaveQuestionAnswer(authedUser, id, answer) {
+export function processSaveQuestionAnswer(authedUser, id, answer) {
   return {
-      type: SAVE_QUESTION_ANSWER,
-      id,
-      authedUser,
-      answer,
-  }
-}
-
-// redux-thunk is used for these async action creators
-export function handleSaveQuestionAnswer(info) {
-  return (dispatch) => {
-
-    return saveQuestionAnswer(info).catch((e) => {
-      console.warn("Error in handleSaveQuestionAnswer: ", e);
-      alert("There was an error saving the question. Try again.");
-    }).then(() => {
-      dispatch(processSaveQuestionAnswer(info.authedUser, info.qid, info.answer));
-    });
+    type: SAVE_QUESTION_ANSWER,
+    id,
+    authedUser,
+    answer,
   };
 }
 
