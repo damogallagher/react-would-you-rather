@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { handleAddQuestion } from "../actions/shared";
+import { handleAddQuestion } from "../../actions/shared";
 import { Redirect } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -12,13 +12,13 @@ class NewQuestion extends Component {
   state = {
     optionOne: "",
     optionTwo: "",
-    toHome: false
+    toHome: false,
   };
 
   handleChange = (e) => {
     this.setState(() => ({
       ...this.state,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -58,31 +58,41 @@ class NewQuestion extends Component {
               alignItems="center"
             >
               <Grid item xs>
-                <Typography gutterBottom variant="subtitle1" component="div" style={{fontWeight: 'bold'}}>
+                <Typography
+                  gutterBottom
+                  variant="subtitle1"
+                  component="div"
+                  style={{ fontWeight: "bold" }}
+                >
                   Create New Question
                 </Typography>
                 <Typography variant="body2">Complete the question</Typography>
-                <Typography variant="body2" gutterBottom style={{fontWeight: 'bold'}}>
+                <Typography
+                  variant="body2"
+                  gutterBottom
+                  style={{ fontWeight: "bold" }}
+                >
                   Would you rather...
                 </Typography>
                 <Fragment>
-                    <TextField
-                      name="optionOne"
-                      label="Option 1"
-                      variant="outlined"
-                      onChange={this.handleChange}
-                    />
+                  <TextField
+                    name="optionOne"
+                    label="Option 1"
+                    variant="outlined"
+                    onChange={this.handleChange}
+                  />
                   <Typography variant="body2" gutterBottom>
                     or
                   </Typography>
-                    <TextField
-                      name="optionTwo"
-                      label="Option 2"
-                      variant="outlined"
-                      onChange={this.handleChange}
-                    />
+                  <TextField
+                    name="optionTwo"
+                    label="Option 2"
+                    variant="outlined"
+                    onChange={this.handleChange}
+                  />
                   <Typography variant="body2" color="text.secondary">
-                    <br /><br />
+                    <br />
+                    <br />
                     <Button
                       variant="contained"
                       onClick={(e) => this.handleSubmit(e)}
@@ -101,7 +111,7 @@ class NewQuestion extends Component {
 }
 function mapStateToProps({ authedUser }, { questionId }) {
   return {
-    authedUser
+    authedUser,
   };
 }
 

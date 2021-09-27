@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { handleSaveQuestionAnswer } from "../actions/shared";
+import { handleSaveQuestionAnswer } from "../../actions/shared";
 import { withRouter } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
@@ -46,18 +46,6 @@ class QuestionCard extends Component {
     );
   };
 
-  handleLike = (e) => {
-    e.preventDefault();
-    const { dispatch, question, authedUser } = this.props;
-
-    dispatch(
-      handleSaveQuestionAnswer({
-        id: question.id,
-        hasLiked: question.hasLiked,
-        authedUser,
-      })
-    );
-  };
   render() {
     const {
       question,
@@ -142,6 +130,7 @@ class QuestionCard extends Component {
                         <Button
                           variant="contained"
                           onClick={(e) => this.answerQuestion(e)}
+                          disabled={selectionOption === ""}
                         >
                           Answer
                         </Button>

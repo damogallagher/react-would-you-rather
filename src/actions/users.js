@@ -17,8 +17,6 @@ export function processSaveUserQuestionAnswer(authedUser, id, answer) {
   };
 }
 export function addUserQuestion(authedUser, id) {
-  console.log("addUserQuestion authedUser:", authedUser)
-  console.log("addUserQuestion id:", id)
   return {
     type: ADD_USER_QUESTION,
     authedUser,

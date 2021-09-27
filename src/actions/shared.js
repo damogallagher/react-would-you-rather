@@ -1,6 +1,14 @@
 import { getInitialData, saveQuestionAnswer, saveQuestion } from "../utils/api";
-import { receiveUsers, processSaveUserQuestionAnswer, addUserQuestion } from "./users";
-import { receiveQuestions, processSaveQuestionAnswer, addQuestion } from "./questions";
+import {
+  receiveUsers,
+  processSaveUserQuestionAnswer,
+  addUserQuestion,
+} from "./users";
+import {
+  receiveQuestions,
+  processSaveQuestionAnswer,
+  addQuestion,
+} from "./questions";
 import { showLoading, hideLoading } from "react-redux-loading";
 
 export function handleInitialData() {
@@ -47,12 +55,8 @@ export function handleAddQuestion(optionOne, optionTwo) {
       author: authedUser.id,
     })
       .then((question) => {
-        dispatch(
-          addQuestion(question)
-          );
-        dispatch(
-          addUserQuestion(authedUser.id, question.id)
-        );
+        dispatch(addQuestion(question));
+        dispatch(addUserQuestion(authedUser.id, question.id));
       })
       .then(() => dispatch(hideLoading()));
   };

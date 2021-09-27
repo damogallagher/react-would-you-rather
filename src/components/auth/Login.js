@@ -33,7 +33,7 @@ class Login extends Component {
     const user = users[userId];
     dispatch(setAuthedUser(user));
     this.setState(() => ({
-      redirectToDashboard: true
+      redirectToDashboard: true,
     }));
   };
 
@@ -51,7 +51,6 @@ class Login extends Component {
       usersArray.push(user);
     });
     return (
-      
       <div>
         <form onSubmit={this.handleSubmit}>
           <FormControl fullWidth>
