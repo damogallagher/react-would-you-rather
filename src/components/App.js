@@ -40,7 +40,7 @@ class App extends Component {
               <div>
                 <Route path="/" exact component={QuestionList} />
                 <Route path="/question/:id" component={QuestionPoll} />
-                <Route path="/new" component={NewQuestion} />
+                <Route path="/add" component={NewQuestion} />
                 <Route path="/leaderboard" component={Leaderboard} />
                 <Route path="/logout" component={Logout} />
                 <Route path="/404" component={Error404} />

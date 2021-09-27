@@ -27,7 +27,7 @@ class Nav extends Component {
                 </NavLink>
               </Button>
               <Button color="inherit">
-                <NavLink to="/new" exact activeClassName="active">
+                <NavLink to="/add" exact activeClassName="active">
                   New Question
                 </NavLink>
               </Button>
