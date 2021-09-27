@@ -1,6 +1,6 @@
-import { getInitialData, saveQuestionAnswer } from "../utils/api";
-import { receiveUsers, processSaveUserQuestionAnswer } from "./users";
-import { receiveQuestions, processSaveQuestionAnswer } from "./questions";
+import { getInitialData, saveQuestionAnswer, saveQuestion } from "../utils/api";
+import { receiveUsers, processSaveUserQuestionAnswer, addUserQuestion } from "./users";
+import { receiveQuestions, processSaveQuestionAnswer, addQuestion } from "./questions";
 import { showLoading, hideLoading } from "react-redux-loading";
 
 export function handleInitialData() {
@@ -32,5 +32,28 @@ export function handleSaveQuestionAnswer(info) {
           processSaveUserQuestionAnswer(info.authedUser, info.qid, info.answer)
         );
       });
+  };
+}
+
+// redux-thunk is used for these async action creators
+export function handleAddQuestion(optionOne, optionTwo) {
+  return (dispatch, getState) => {
+    const { authedUser } = getState();
+    dispatch(showLoading());
+
+    return saveQuestion({
+      optionOneText: optionOne,
+      optionTwoText: optionTwo,
+      author: authedUser.id,
+    })
+      .then((question) => {
+        dispatch(
+          addQuestion(question)
+          );
+        dispatch(
+          addUserQuestion(authedUser.id, question.id)
+        );
+      })
+      .then(() => dispatch(hideLoading()));
   };
 }
