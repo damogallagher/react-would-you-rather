@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import LeaderboardCard from "./LeaderboardCard.js";
+import { LeaderboardCard } from "./LeaderboardCard.js";
 import Box from "@mui/material/Box";
 
-export function Leaderboard() {  
+export function Leaderboard() {
   const users = useSelector((state) => state.users);
   const leaderboardUsers = [];
   Object.keys(users).forEach((userId) => {
@@ -26,4 +26,4 @@ export function Leaderboard() {
       </div>
     </Box>
   );
-};
+}

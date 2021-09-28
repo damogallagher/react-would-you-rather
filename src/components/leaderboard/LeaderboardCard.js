@@ -1,6 +1,5 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import React from "react";
+import { useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -9,11 +8,15 @@ import PropTypes from "prop-types";
 import Badge from "@mui/material/Badge";
 import StarIcon from "@mui/icons-material/Star";
 
-class LeaderboardCard extends Component {
-  render() {
+export function LeaderboardCard(props) {    
     // destructure values we need
-    const { user, questionsCreated, answeredQuestions, totalScore, index } =
-      this.props;
+    const { userId, index } = props
+
+    const users = useSelector((state) => state.users);
+    const user = users[userId];
+    const answeredQuestions = Object.keys(user.answers).length;
+    const questionsCreated = user.questions.length;
+    const totalScore = questionsCreated + answeredQuestions
     const { avatarURL, name } = user;
 
     return (
@@ -49,24 +52,10 @@ class LeaderboardCard extends Component {
         </Paper>
       </span>
     );
-  }
+
 }
 
 LeaderboardCard.propTypes = {
   userId: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
 };
-
-function mapStateToProps({ users }, { userId }) {
-  const user = users[userId];
-  const answeredQuestions = Object.keys(user.answers).length;
-  const questionsCreated = user.questions.length;
-  return {
-    user,
-    questionsCreated,
-    answeredQuestions,
-    totalScore: questionsCreated + answeredQuestions,
-  };
-}
-
-export default withRouter(connect(mapStateToProps)(LeaderboardCard));
