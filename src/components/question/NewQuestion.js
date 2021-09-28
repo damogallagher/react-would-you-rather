@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
+import React, { useState, Fragment } from "react";
+import { useDispatch } from "react-redux";
 import { handleAddQuestion } from "../../actions/shared";
 import { Redirect } from "react-router-dom";
 import TextField from "@mui/material/TextField";
@@ -8,36 +8,30 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 
-class NewQuestion extends Component {
-  state = {
-    optionOne: "",
-    optionTwo: "",
-    toHome: false,
+export function NewQuestion(props) {  
+
+  const dispatch = useDispatch();
+  const [optionOne, setOptionOne] = useState("");
+  const [optionTwo, setOptionTwo] = useState("");
+  const [toHome, setToHome] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    if (name.toLowerCase() === 'optionone') {
+      setOptionOne(value)
+    } else if (name.toLowerCase() === 'optiontwo') {
+      setOptionTwo(value)
+    }
   };
 
-  handleChange = (e) => {
-    this.setState(() => ({
-      ...this.state,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { optionOne, optionTwo } = this.state;
-    const { dispatch } = this.props;
-
     dispatch(handleAddQuestion(optionOne, optionTwo));
-    this.setState(() => ({
-      optionOne: "",
-      optionTwo: "",
-      toHome: true,
-    }));
+    setOptionOne("")
+    setOptionTwo("")
+    setToHome(true)
   };
-
-  render() {
-    const { toHome } = this.state;
 
     if (toHome === true) {
       return <Redirect to="/" />;
@@ -79,7 +73,7 @@ class NewQuestion extends Component {
                     name="optionOne"
                     label="Option 1"
                     variant="outlined"
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                   />
                   <Typography variant="body2" gutterBottom>
                     or
@@ -88,14 +82,14 @@ class NewQuestion extends Component {
                     name="optionTwo"
                     label="Option 2"
                     variant="outlined"
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                   />
                   <Typography variant="body2" color="text.secondary">
                     <br />
                     <br />
                     <Button
                       variant="contained"
-                      onClick={(e) => this.handleSubmit(e)}
+                      onClick={(e) => handleSubmit(e)}
                     >
                       Submit Question
                     </Button>
@@ -107,12 +101,7 @@ class NewQuestion extends Component {
         </Paper>
       </span>
     );
-  }
-}
-function mapStateToProps({ authedUser }, { questionId }) {
-  return {
-    authedUser,
-  };
+  
 }
 
-export default connect(mapStateToProps)(NewQuestion);
+

@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import QuestionCard from "./QuestionCard.js";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import {QuestionCard} from "./QuestionCard.js";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -35,19 +35,20 @@ function tabDisplayProps(index) {
   };
 }
 
-class QuestionList extends Component {
-  state = {
-    value: 0,
-  };
-  handleChange = (event, newValue) => {
-    this.setState(() => ({
-      value: newValue,
-    }));
+export function QuestionList(props) {  
+  const [value, setValue] = useState(0);
+
+  const questions = useSelector((state) => state.questions);
+  const authedUser = useSelector((state) => state.authedUser);
+
+  const answeredQuestions = getFilteredQuestions(authedUser, questions, true);
+  const unAnsweredQuestions = getFilteredQuestions(authedUser, questions, false);
+
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
   };
 
-  render() {
-    const { value } = this.state;
-    const { answeredQuestions, unAnsweredQuestions } = this.props;
     let questionsList = unAnsweredQuestions;
     if (value === 1) {
       questionsList = answeredQuestions;
@@ -70,7 +71,7 @@ class QuestionList extends Component {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={value}
-            onChange={this.handleChange}
+            onChange={handleChange}
             aria-label="questions tabs"
           >
             <Tab label="Unanswered Questions" {...tabDisplayProps(0)} />
@@ -85,7 +86,6 @@ class QuestionList extends Component {
         </TabPanel>
       </Box>
     );
-  }
 }
 
 function getFilteredQuestions(authedUser, questions, answered) {
@@ -108,18 +108,5 @@ function getFilteredQuestions(authedUser, questions, answered) {
     .sort((a, b) => questions[b].timestamp - questions[a].timestamp);
 }
 
-function mapStateToProps({ questions, authedUser }) {
-  const answeredQuestions = getFilteredQuestions(authedUser, questions, true);
-  const unAnsweredQuestions = getFilteredQuestions(
-    authedUser,
-    questions,
-    false
-  );
 
-  return {
-    answeredQuestions,
-    unAnsweredQuestions,
-  };
-}
 
-export default connect(mapStateToProps)(QuestionList);

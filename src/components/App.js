@@ -1,10 +1,10 @@
 import React, { useEffect, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { handleInitialData } from "../actions/shared";
-import QuestionList from "./question/QuestionList";
+import { QuestionList } from "./question/QuestionList";
 import LoadingBar from "react-redux-loading";
-import NewQuestion from "./question/NewQuestion";
-import QuestionPoll from "./question/QuestionPoll";
+import { NewQuestion } from "./question/NewQuestion";
+import { QuestionPoll } from "./question/QuestionPoll";
 import { Nav } from "./nav/Nav";
 import { BrowserRouter, Route } from "react-router-dom";
 import { Leaderboard } from "./leaderboard/Leaderboard";
