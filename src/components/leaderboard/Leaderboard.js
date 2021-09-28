@@ -1,27 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import LeaderboardCard from "./LeaderboardCard.js";
 import Box from "@mui/material/Box";
-class Leaderboard extends Component {
-  render() {
-    const { leaderboardUsers } = this.props;
-    return (
-      <Box sx={{ width: "100%" }}>
-        <div>
-          <ul className="users-array-list">
-            {leaderboardUsers.map((leaderboardUser, index) => (
-              <li key={leaderboardUser.id}>
-                <LeaderboardCard userId={leaderboardUser.id} index={index} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Box>
-    );
-  }
-}
 
-function mapStateToProps({ users }) {
+const Leaderboard = () => {
+  const users = useSelector((state) => state.users);
   const leaderboardUsers = [];
   Object.keys(users).forEach((userId) => {
     const user = users[userId];
@@ -29,9 +12,20 @@ function mapStateToProps({ users }) {
     leaderboardUsers.push(user);
   });
   leaderboardUsers.sort((a, b) => b.totalCount - a.totalCount);
-  return {
-    leaderboardUsers,
-  };
-}
 
-export default connect(mapStateToProps)(Leaderboard);
+  return (
+    <Box sx={{ width: "100%" }}>
+      <div>
+        <ul className="users-array-list">
+          {leaderboardUsers.map((leaderboardUser, index) => (
+            <li key={leaderboardUser.id}>
+              <LeaderboardCard userId={leaderboardUser.id} index={index} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Box>
+  );
+};
+
+export default Leaderboard;

@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, Fragment } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { handleInitialData } from "../actions/shared";
 import QuestionList from "./question/QuestionList";
 import LoadingBar from "react-redux-loading";
@@ -15,48 +15,43 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Error404 from "./error/Error404";
 
-class App extends Component {
-  //Use component did mount to load the initial data
-  componentDidMount() {
-    this.props.dispatch(handleInitialData());
-  }
+const App = () => {
+  const dispatch = useDispatch();
 
-  render() {
-    return (
-      <BrowserRouter>
-        <Fragment>
-          <CssBaseline />
-          <Container maxWidth="md">
-            <LoadingBar />
-            <Nav />
-            <br />
-            <br />
-            {this.props.loggedIn !== true ? (
-              <div>
-                <Route path="/logout" component={Logout} />
-                <Login />
-              </div>
-            ) : (
-              <div>
-                <Route path="/" exact component={QuestionList} />
-                <Route path="/question/:id" component={QuestionPoll} />
-                <Route path="/add" component={NewQuestion} />
-                <Route path="/leaderboard" component={Leaderboard} />
-                <Route path="/logout" component={Logout} />
-                <Route path="/404" component={Error404} />
-              </div>
-            )}
-          </Container>
-        </Fragment>
-      </BrowserRouter>
-    );
-  }
-}
+  useEffect(() => {
+    dispatch(handleInitialData());
+  }, [dispatch]);
 
-function mapStateToProps({ authedUser }) {
-  return {
-    loggedIn: isLoggedIn(authedUser),
-  };
-}
+  const authedUser = useSelector((state) => state.authedUser);
+  const loggedIn = isLoggedIn(authedUser);
+  return (
+    <BrowserRouter>
+      <Fragment>
+        <CssBaseline />
+        <Container maxWidth="md">
+          <LoadingBar />
+          <Nav />
+          <br />
+          <br />
+          {loggedIn !== true ? (
+            <div>
+              <Route path="/logout" component={Logout} />
+              <Login />
+            </div>
+          ) : (
+            <div>
+              <Route path="/" exact component={QuestionList} />
+              <Route path="/question/:id" component={QuestionPoll} />
+              <Route path="/add" component={NewQuestion} />
+              <Route path="/leaderboard" component={Leaderboard} />
+              <Route path="/logout" component={Logout} />
+              <Route path="/404" component={Error404} />
+            </div>
+          )}
+        </Container>
+      </Fragment>
+    </BrowserRouter>
+  );
+};
 
-export default connect(mapStateToProps)(App);
+export default App;
