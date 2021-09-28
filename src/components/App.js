@@ -14,6 +14,7 @@ import { isLoggedIn } from "../utils/helpers";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import { Error404 } from "./error/Error404";
+import { Redirect } from "react-router-dom";
 
 export function App() {
   const dispatch = useDispatch();
@@ -22,8 +23,6 @@ export function App() {
     dispatch(handleInitialData());
   }, [dispatch]);
 
-  const authedUser = useSelector((state) => state.authedUser);
-  const loggedIn = isLoggedIn(authedUser);
   return (
     <BrowserRouter>
       <Fragment>
@@ -33,23 +32,48 @@ export function App() {
           <Nav />
           <br />
           <br />
-          {loggedIn !== true ? (
-            <div>
-              <Route path="/logout" component={Logout} />
-              <Login />
-            </div>
-          ) : (
-            <div>
-              <Route path="/" exact component={QuestionList} />
-              <Route path="/question/:id" component={QuestionPoll} />
-              <Route path="/add" component={NewQuestion} />
-              <Route path="/leaderboard" component={Leaderboard} />
-              <Route path="/logout" component={Logout} />
-              <Route path="/404" component={Error404} />
-            </div>
-          )}
+          <div>
+            <PrivateRoute path="/" exact>
+              <QuestionList />
+            </PrivateRoute>
+            <PrivateRoute path="/question/:id">
+              <QuestionPoll />
+            </PrivateRoute>
+            <PrivateRoute path="/add">
+              <NewQuestion />
+            </PrivateRoute>
+            <PrivateRoute path="/leaderboard">
+              <Leaderboard />
+            </PrivateRoute>
+            <Route path="/404" component={Error404} />
+            <Route path="/logout" component={Logout} />
+            <Route path="/login" component={Login} />
+          </div>
         </Container>
       </Fragment>
     </BrowserRouter>
+  );
+}
+
+function PrivateRoute({ children, ...rest }) {
+  const authedUser = useSelector((state) => state.authedUser);
+  const loggedIn = isLoggedIn(authedUser);
+
+  return (
+    <Route
+      {...rest}
+      render={({ location }) => {
+        return loggedIn === true ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location },
+            }}
+          />
+        );
+      }}
+    />
   );
 }
