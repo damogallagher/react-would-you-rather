@@ -7,15 +7,15 @@ import NewQuestion from "./question/NewQuestion";
 import QuestionPoll from "./question/QuestionPoll";
 import Nav from "./nav/Nav";
 import { BrowserRouter, Route } from "react-router-dom";
-import Leaderboard from "./leaderboard/Leaderboard";
-import Logout from "./auth/Logout";
-import Login from "./auth/Login";
+import { Leaderboard } from "./leaderboard/Leaderboard";
+import { Logout } from "./auth/Logout";
+import { Login } from "./auth/Login";
 import { isLoggedIn } from "../utils/helpers";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
-import Error404 from "./error/Error404";
+import { Error404 } from "./error/Error404";
 
-const App = () => {
+export function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -52,6 +52,4 @@ const App = () => {
       </Fragment>
     </BrowserRouter>
   );
-};
-
-export default App;
+}

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import LeaderboardCard from "./LeaderboardCard.js";
 import Box from "@mui/material/Box";
 
-const Leaderboard = () => {
+export function Leaderboard() {  
   const users = useSelector((state) => state.users);
   const leaderboardUsers = [];
   Object.keys(users).forEach((userId) => {
@@ -27,5 +27,3 @@ const Leaderboard = () => {
     </Box>
   );
 };
-
-export default Leaderboard;

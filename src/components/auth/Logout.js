@@ -1,16 +1,17 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { logoutUser } from "../../actions/authedUser";
 
-class Logout extends Component {
-  componentDidMount() {
-    this.props.dispatch(logoutUser());
-    this.props.history.push("/");
-  }
+export function Logout(props) {
 
-  render() {
-    return <div>Logout</div>;
-  }
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(logoutUser());
+    props.history.push("/");
+  }, [dispatch, props.history]);
+
+  return <div>Logout</div>;
 }
 
-export default connect()(Logout);
+

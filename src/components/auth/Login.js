@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,50 +9,40 @@ import Avatar from "@mui/material/Avatar";
 import { setAuthedUser } from "../../actions/authedUser";
 import { Redirect } from "react-router-dom";
 
-class Login extends Component {
-  state = {
-    userId: "",
-    redirectToDashboard: false,
-    usersArray: [],
-  };
+export function Login() {
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users);
 
-  handleChange = (e) => {
+  const [userId, setUserId] = useState("");
+  const [redirectToDashboard, setRedirectToDashboard] = useState(false);
+
+  const handleChange = (e) => {
     e.preventDefault();
     const userId = e.target.value;
-
-    this.setState(() => ({
-      userId,
-    }));
+    setUserId(userId)
   };
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { userId } = this.state;
-    const { dispatch, users } = this.props;
     const user = users[userId];
-    dispatch(setAuthedUser(user));
-    this.setState(() => ({
-      redirectToDashboard: true,
-    }));
-  };
 
-  render() {
-    const { userId, redirectToDashboard } = this.state;
+    dispatch(setAuthedUser(user));
+    setRedirectToDashboard(true)
+  };
 
     if (redirectToDashboard === true) {
       return <Redirect to="/" />;
     }
 
-    const { users } = this.props;
-    let usersArray = [];
+    let tempUsersArray = [];
     Object.keys(users).forEach((userId) => {
       const user = users[userId];
-      usersArray.push(user);
+      tempUsersArray.push(user);
     });
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <FormControl fullWidth>
             <InputLabel id="login">Login</InputLabel>
             <Select
@@ -60,9 +50,9 @@ class Login extends Component {
               id="login"
               value={userId}
               label="Login"
-              onChange={this.handleChange}
+              onChange={handleChange}
             >
-              {usersArray.map((user) => (
+              {tempUsersArray.map((user) => (
                 <MenuItem value={user.id} key={user.id}>
                   <Avatar alt={user.name} src={user.avatarURL} />
                   {user.name}
@@ -81,12 +71,6 @@ class Login extends Component {
         </form>
       </div>
     );
-  }
+  
 }
 
-function mapStateToProps({ users }) {
-  return {
-    users,
-  };
-}
-export default connect(mapStateToProps)(Login);
